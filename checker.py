@@ -7,6 +7,7 @@ Created on Apr 19, 2018
 '''
 
 from collections import OrderedDict, namedtuple
+from pathlib import Path
 from flask import Flask, render_template, redirect
 from flask_socketio import SocketIO, emit
 from flask_wtf import FlaskForm
@@ -50,6 +51,7 @@ def readFile():
             name,answer = line.strip().split("|")
             puzzle_answers[name] = answer
             #solved_puzzles.append(Puzzle(name,answer))
+    Path(CORRECT_PUZZLES).touch()
     with open(CORRECT_PUZZLES) as f:
         for line in f:
             try:
