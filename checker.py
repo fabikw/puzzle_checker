@@ -25,6 +25,8 @@ socket = SocketIO(app)
 
 PUZZLE_FILE = "answers.csv"
 CORRECT_PUZZLES = "correct.txt"
+total = 0
+solved = 0
 
 Puzzle = namedtuple("Puzzle",["puzzle_name", "puzzle_answer", "solved_time"])
 solved_puzzles = []
@@ -43,7 +45,7 @@ class CheckAnswer(FlaskForm):
 
 
 def readFile():
-    global solved_puzzles, puzzle_answers
+    global solved_puzzles, puzzle_answers, total, solved
     with open(PUZZLE_FILE) as f:
         for line in f:
             if line == "":
@@ -51,6 +53,7 @@ def readFile():
             name,answer = line.strip().split("|")
             puzzle_answers[name] = answer
             #solved_puzzles.append(Puzzle(name,answer))
+    total = len(puzzle_answers)
     Path(CORRECT_PUZZLES).touch()
     with open(CORRECT_PUZZLES) as f:
         for line in f:
@@ -60,11 +63,12 @@ def readFile():
                 del puzzle_answers[line]
             except:
                 pass
+    solved = len(solved_puzzles)
             
 @app.route("/", methods=["GET","POST"])
 @app.route("/index", methods = ["GET","POST"])
 def index():
-    global solved_puzzles, puzzle_answers
+    global solved_puzzles, puzzle_answers, solved, total
     form = CheckAnswer()
     form.puzzle_list.choices = zip(puzzle_answers.keys(), puzzle_answers.keys())
     if form.validate_on_submit():
@@ -76,10 +80,11 @@ def index():
             with open(CORRECT_PUZZLES,"a") as f:
                 f.write(puzzle+"|"+now+"\n")
             del puzzle_answers[puzzle]
+            solved += 1
             emit("puzzle solved", broadcast=True, namespace="/test")
         return redirect("/index")
     form.puzzle_list.choices = zip(puzzle_answers.keys(), puzzle_answers.keys())
-    return render_template("index.html", solved_list = solved_puzzles, form = form)
+    return render_template("index.html", solved_list = solved_puzzles, form = form, solved = solved, total = total)
 
 
 if __name__ == '__main__':
