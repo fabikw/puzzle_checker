@@ -2,8 +2,38 @@
 <html>
     <head>
         <title>Puzzle Answer Checker</title>
-            	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+        <style>
+        .styled-select {
+		   background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+		   height: 29px;
+		   overflow: hidden;
+		   width: 240px;
+		}
+		
+		.styled-select select {
+		   background: transparent;
+		   border: none;
+		   font-size: 14px;
+		   height: 29px;
+		   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+		   width: 268px;
+		}
+		
+		.styled-select.slate {
+		   background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;
+		   height: 34px;
+		   width: 240px;
+		}
+		
+		.styled-select.slate select {
+		   border: 1px solid #ccc;
+		   font-size: 16px;
+		   height: 34px;
+		   width: 268px;
+		}
+        </style>
         
         <script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
@@ -39,7 +69,7 @@
     	{{ form.hidden_tag() }}
         <p style="font-size:15pt">
             <b style="font-size:15pt">{{ form.puzzle_list.label }}</b><br>
-            {{ form.puzzle_list(size=1) }}
+            <div class="styled-select slate">{{ form.puzzle_list(size=1) }}</div>
         </p>
         <p style="font-size:15pt">
             <b style="font-size:15pt">{{ form.answer.label }}</b><br>
