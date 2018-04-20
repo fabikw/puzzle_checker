@@ -29,19 +29,19 @@
     </head>
     <body>
     
-    <form action="" method="post">
+    <form action="" method="post" style="padding:30pt">
         <p>
-            <b>{{ form.puzzle_list.label }}</b><br>
+            <b style="font-size:15pt">{{ form.puzzle_list.label }}</b><br>
             {{ form.puzzle_list(size=1) }}
         </p>
         <p>
-            <b>{{ form.answer.label }}</b><br>
+            <b style="font-size:15pt">{{ form.answer.label }}</b><br>
             {{ form.answer(size=32) }}
             {% for error in form.answer.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>{{ form.submit() }}</p>
+        <p style="font-size:15pt">{{ form.submit() }}</p>
     </form>
     
         <table id="table" class="display" style="width:80%">
