@@ -56,6 +56,7 @@ def index():
         answer = form.answer.data.upper().replace(" ", "")
         if answer == puzzle_answers[puzzle]:
             solved_puzzles.append(Puzzle(puzzle,answer))
+            solved_puzzles.sort()
             del puzzle_answers[puzzle]
         return redirect("/index")
     return render_template("index.html", solved_list = solved_puzzles, form = form)
