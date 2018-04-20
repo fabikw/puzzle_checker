@@ -24,6 +24,9 @@
         <p>
             <b>{{ form.answer.label }}</b><br>
             {{ form.answer(size=32) }}
+            {% for error in form.answer.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
         <p>{{ form.submit() }}</p>
     </form>

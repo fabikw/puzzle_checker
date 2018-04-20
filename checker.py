@@ -60,6 +60,7 @@ def index():
             del puzzle_answers[puzzle]
             emit("puzzle solved", broadcast=True, namespace="/test")
         return redirect("/index")
+    form.puzzle_list.choices = zip(puzzle_answers.keys(), puzzle_answers.keys())
     return render_template("index.html", solved_list = solved_puzzles, form = form)
 
 
