@@ -7,7 +7,7 @@ Created on Apr 19, 2018
 '''
 
 from flask import Flask, render_template, redirect
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 from flask_wtf import FlaskForm
 from flask_wtf import csrf
 from wtforms import StringField, SubmitField, SelectField
@@ -58,6 +58,7 @@ def index():
             solved_puzzles.append(Puzzle(puzzle,answer))
             solved_puzzles.sort()
             del puzzle_answers[puzzle]
+            emit("puzzle solved", broadcast=True)
         return redirect("/index")
     return render_template("index.html", solved_list = solved_puzzles, form = form)
 
