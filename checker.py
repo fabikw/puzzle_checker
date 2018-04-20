@@ -18,6 +18,7 @@ app = Flask(__name__)
 socket = SocketIO(app)
 
 PUZZLE_FILE = "answers.csv"
+CORRECT_PUZZLES = "correct.txt"
 
 Puzzle = namedtuple("Puzzle",["puzzle_name", "puzzle_answer"])
 solved_puzzles = []
@@ -36,6 +37,7 @@ class CheckAnswer(FlaskForm):
 
 
 def readFile():
+    global solved_puzzles, puzzle_answers
     with open(PUZZLE_FILE) as f:
         for line in f:
             if line == "":
@@ -43,6 +45,14 @@ def readFile():
             name,answer = line.strip().split("|")
             puzzle_answers[name] = answer
             #solved_puzzles.append(Puzzle(name,answer))
+    with open(CORRECT_PUZZLES) as f:
+        for line in f:
+            line = line.strip()
+            try:
+                solved_puzzles.append(Puzzle(line, puzzle_answers[line]))
+                del puzzle_answers[line]
+            except:
+                pass
     solved_puzzles.sort()
             
 @app.route("/", methods=["GET","POST"])
@@ -56,6 +66,8 @@ def index():
         answer = form.answer.data.upper().replace(" ", "")
         if answer == puzzle_answers[puzzle]:
             solved_puzzles.append(Puzzle(puzzle,answer))
+            with open(CORRECT_PUZZLES,"a") as f:
+                f.write(puzzle+"\n")
             solved_puzzles.sort()
             del puzzle_answers[puzzle]
             emit("puzzle solved", broadcast=True, namespace="/test")
