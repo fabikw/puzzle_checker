@@ -6,13 +6,14 @@ Created on Apr 19, 2018
 @author: fabian
 '''
 
+from collections import OrderedDict, namedtuple
 from flask import Flask, render_template, redirect
 from flask_socketio import SocketIO, emit
 from flask_wtf import FlaskForm
 from flask_wtf import csrf
 from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired
-from collections import OrderedDict, namedtuple
+
 
 app = Flask(__name__)
 socket = SocketIO(app)
