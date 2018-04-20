@@ -5,3 +5,6 @@ This small webapp is used to check answers (of puzzles or whatever) for correctn
 The `answers.csv` must be compiled by a person that doesn't care about seeing the answers.
 
 The program supports persistent state in case the server goes down. Puzzles correctly solved (and a timestamp) are collected in a `correct.txt` file that is read at the beginning. The names of the puzzles in that file must match those in the `answers.csv` when restoring or they won't be recognized as solved (but the app will run properly).
+
+
+The app is provided as is, under MIT license.
