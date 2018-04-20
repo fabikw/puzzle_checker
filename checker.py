@@ -8,7 +8,8 @@ Created on Apr 19, 2018
 
 from collections import OrderedDict, namedtuple
 from pathlib import Path
-from flask import Flask, render_template, redirect
+import os
+from flask import Flask, render_template, redirect, flash
 from flask_socketio import SocketIO, emit
 from flask_wtf import FlaskForm
 from flask_wtf import csrf
@@ -33,10 +34,12 @@ solved_puzzles = []
 
 puzzle_answers = OrderedDict()
 
-class Config(object):
-    WTF_CSRF_ENABLED = False
-    
-app.config.from_object(Config)
+# class Config(object):
+#     WTF_CSRF_ENABLED = False
+#     
+# app.config.from_object(Config)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or "fafafritas"
+
 
 class CheckAnswer(FlaskForm):
     puzzle_list = SelectField(label = "Puzzle Name:")
@@ -82,6 +85,8 @@ def index():
             del puzzle_answers[puzzle]
             solved += 1
             emit("puzzle solved", broadcast=True, namespace="/test")
+        else:
+            flash("{} is an incorrect answer for {}".format(answer, puzzle))
         return redirect("/index")
     form.puzzle_list.choices = zip(puzzle_answers.keys(), puzzle_answers.keys())
     return render_template("index.html", solved_list = solved_puzzles, form = form, solved = solved, total = total)

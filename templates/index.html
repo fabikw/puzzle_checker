@@ -36,6 +36,7 @@
     </div>
     
     <form action="" method="post" style="padding:30pt">
+    	{{ form.hidden_tag() }}
         <p style="font-size:15pt">
             <b style="font-size:15pt">{{ form.puzzle_list.label }}</b><br>
             {{ form.puzzle_list(size=1) }}
@@ -48,7 +49,18 @@
             {% endfor %}
         </p>
         <p style="font-size:15pt">{{ form.submit() }}</p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul><font color="red">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </font></ul>
+        {% endif %}
+        {% endwith %}
+    
     </form>
+    
     
     <div align="center">
     <p style="font-size:20pt"><font color="blue">{{solved}} solved puzzle(s) out of {{total}}</font></p>
