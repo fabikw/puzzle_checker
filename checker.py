@@ -13,6 +13,10 @@ from flask_wtf import FlaskForm
 from flask_wtf import csrf
 from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired
+import datetime
+
+def get_now():
+    return datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
 
 
 app = Flask(__name__)
@@ -21,7 +25,7 @@ socket = SocketIO(app)
 PUZZLE_FILE = "answers.csv"
 CORRECT_PUZZLES = "correct.txt"
 
-Puzzle = namedtuple("Puzzle",["puzzle_name", "puzzle_answer"])
+Puzzle = namedtuple("Puzzle",["puzzle_name", "puzzle_answer", "solved_time"])
 solved_puzzles = []
 
 puzzle_answers = OrderedDict()
@@ -48,13 +52,12 @@ def readFile():
             #solved_puzzles.append(Puzzle(name,answer))
     with open(CORRECT_PUZZLES) as f:
         for line in f:
-            line = line.strip()
             try:
-                solved_puzzles.append(Puzzle(line, puzzle_answers[line]))
+                line, time = line.strip().split("|")
+                solved_puzzles.append(Puzzle(line, puzzle_answers[line],time))
                 del puzzle_answers[line]
             except:
                 pass
-    solved_puzzles.sort()
             
 @app.route("/", methods=["GET","POST"])
 @app.route("/index", methods = ["GET","POST"])
@@ -66,10 +69,10 @@ def index():
         puzzle = form.puzzle_list.data
         answer = form.answer.data.upper().replace(" ", "")
         if answer == puzzle_answers[puzzle]:
-            solved_puzzles.append(Puzzle(puzzle,answer))
+            now = get_now()
+            solved_puzzles.append(Puzzle(puzzle,answer,now))
             with open(CORRECT_PUZZLES,"a") as f:
-                f.write(puzzle+"\n")
-            solved_puzzles.sort()
+                f.write(puzzle+"|"+now+"\n")
             del puzzle_answers[puzzle]
             emit("puzzle solved", broadcast=True, namespace="/test")
         return redirect("/index")
