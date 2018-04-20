@@ -3,6 +3,19 @@
         <title>Puzzle Answer Checker</title>
     </head>
     <body>
+    
+    <form action="" method="post">
+        <p>
+            <b>{{ form.puzzle_list.label }}</b><br>
+            {{ form.puzzle_list(size=1) }}
+        </p>
+        <p>
+            <b>{{ form.answer.label }}</b><br>
+            {{ form.answer(size=32) }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    
         <table style="width:80%">
           <tr>
 		    <th>Puzzle Name</th> 
