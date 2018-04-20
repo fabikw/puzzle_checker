@@ -8,6 +8,9 @@ Created on Apr 19, 2018
 
 from flask import Flask, render_template
 from flask_socketio import SocketIO
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, SelectField
+from wtforms.validators import DataRequired
 from collections import OrderedDict, namedtuple
 
 app = Flask(__name__)
@@ -20,6 +23,12 @@ solved_puzzles = []
 
 puzzle_answers = OrderedDict()
 
+class CheckAnswer(FlaskForm):
+    puzzle_list = SelectField(label = "Puzzle Name:", puzzle_answers.keys())
+    answer = StringField(label = "Answer:",validators=[DataRequired()])
+    submit = SubmitField(label = "Check answer")
+    
+
 
 def readFile():
     with open(PUZZLE_FILE) as f:
@@ -31,7 +40,7 @@ def readFile():
             solved_puzzles.append(Puzzle(name,answer))
     solved_puzzles.sort()
             
-@app.route("/")
+@app.route("/", methods=["POST"])
 def index():
     return str(solved_puzzles)
 
