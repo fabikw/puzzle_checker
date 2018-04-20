@@ -28,14 +28,14 @@
 		});
 		</script>
     </head>
-    <body>
+    <body style="font-family:Arial, Helvetica, Lucida" >
     
     <form action="" method="post" style="padding:30pt">
-        <p>
+        <p style="font-size:15pt">
             <b style="font-size:15pt">{{ form.puzzle_list.label }}</b><br>
             {{ form.puzzle_list(size=1) }}
         </p>
-        <p>
+        <p style="font-size:15pt">
             <b style="font-size:15pt">{{ form.answer.label }}</b><br>
             {{ form.answer(size=32) }}
             {% for error in form.answer.errors %}
