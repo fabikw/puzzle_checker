@@ -24,10 +24,9 @@ solved_puzzles = []
 puzzle_answers = OrderedDict()
 
 class CheckAnswer(FlaskForm):
-    puzzle_list = SelectField(label = "Puzzle Name:", puzzle_answers.keys())
+    puzzle_list = SelectField(label = "Puzzle Name:", choices = puzzle_answers.keys())
     answer = StringField(label = "Answer:",validators=[DataRequired()])
     submit = SubmitField(label = "Check answer")
-    
 
 
 def readFile():
@@ -40,11 +39,12 @@ def readFile():
             solved_puzzles.append(Puzzle(name,answer))
     solved_puzzles.sort()
             
-@app.route("/", methods=["POST"])
+@app.route("/", methods=["GET","POST"])
+@app.route("/index", methods = ["GET","POST"])
 def index():
-    return str(solved_puzzles)
+    return render_template("index.html", solved_list = solved_puzzles)
 
 
 if __name__ == '__main__':
     readFile()
-    socket.run(app,host="0.0.0.0", port=3467)
+    socket.run(app,host="0.0.0.0", port=3467,debug = True)

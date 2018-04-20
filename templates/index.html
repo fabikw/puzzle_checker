@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>Puzzle Answer Checker</title>
+    </head>
+    <body>
+        <table style="width:80%">
+          <tr>
+		    <th>Puzzle Name</th> 
+    		<th>Answer</th>
+  			</tr>
+        {% for puzzle in solved_list %}
+		  <tr>
+		    <td>{{puzzle.puzzle_name}}</td>
+		    <td>{{puzzle.puzzle_answer}}</td> 
+		  </tr>
+        {% endfor %}
+        </table>
+    </body>
+</html>
