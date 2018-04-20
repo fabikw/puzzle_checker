@@ -58,7 +58,7 @@ def index():
             solved_puzzles.append(Puzzle(puzzle,answer))
             solved_puzzles.sort()
             del puzzle_answers[puzzle]
-            emit("puzzle solved", broadcast=True)
+            emit("puzzle solved", broadcast=True, namespace="/test")
         return redirect("/index")
     return render_template("index.html", solved_list = solved_puzzles, form = form)
 
