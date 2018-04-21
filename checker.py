@@ -94,4 +94,4 @@ def index():
 
 if __name__ == '__main__':
     readFile()
-    socket.run(app,host="0.0.0.0", port=3467,debug = True)
+    socket.run(app,host="0.0.0.0", port=3467)
