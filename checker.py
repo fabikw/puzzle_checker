@@ -24,7 +24,7 @@ def get_now():
 app = Flask(__name__)
 socket = SocketIO(app)
 
-PUZZLE_FILE = "answers.csv"
+PUZZLE_FILE = "real_answers.csv"
 CORRECT_PUZZLES = "correct.txt"
 total = 0
 solved = 0
